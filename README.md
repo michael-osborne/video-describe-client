@@ -29,6 +29,7 @@ The pipelines are created using Java PriorityBlockingQueue(s). The consumers are
 public void processFrame(FrameData frame)
 
 For each consumer, a priority blocking queue is created for the parameter class type and stored in a List associated with the class type. Concretely, the objects look like:
+    
     private Map<Class<?>, List<PriorityBlockingQueue<PipelineData>>> dataToQueues = new ConcurrentHashMap<>();
 
 The class PipelineOrchestrator.submitData(PipelineData) will queue the object passed in to all consumers registered to consume the parameter type.
