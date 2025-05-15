@@ -1,0 +1,16 @@
+The flow:
+Checkout as guest...
+
+Questions:
+    Do I store the QR code in the DB?
+
+    The biggest question(s) I have:
+    - Do I give the person only 1 QR code of a size specified? Or do I make/give them all?
+    - If the latter, do I charge more for more codes?
+    - Do I email them to the person? All of them? How should I do this?
+
+
+    My question now is about the billing model.
+
+How do I want to do this pricing model?
+
