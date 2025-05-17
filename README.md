@@ -44,4 +44,4 @@ This basic proof-of-concept pipeline is enough to get an extensible video descri
 # Demos/Contact
 
 
-Please contact me for a login if you're interested in see a barebones demo of the output.
+A barebones demo is available here: https://qr-ify.com/video-srvr/login. Please contact me for login credentials
