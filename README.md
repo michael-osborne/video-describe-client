@@ -23,7 +23,7 @@ Each of the following lines is it's own pipeline. Indentations indicate dependec
 
 ### Pipelines
 
-The pipelines are created using Java PriorityBlockingQueue(s). The consumers are must be Spring @Service objects and tagged with a custom annotation @consume(threads=#). Methods tagged with this annotation are void and take one parameter - an object that extends PipelineData. An example would be
+The pipelines are created using Java PriorityBlockingQueue(s). The consumers must be Spring @Service objects and tagged with a custom annotation @Consume(threads=#). Methods tagged with this annotation are void and take one parameter; the object that extends PipelineData. An example would be
 
 @Consume(threads=1)
 public void processFrame(FrameData frame)
