@@ -2,7 +2,7 @@ package com.utopiarealized.videodescribe.client.pipeline.model;
 
 import java.util.Base64;
 public class FrameData extends PipelineData {
-    private long videoId;
+    private int videoId;
     private byte[] bytes;
     private double timestamp;
     private int sequence;
@@ -10,7 +10,7 @@ public class FrameData extends PipelineData {
     private int numFrames;
     private String location;
 
-    public FrameData(long videoId, String location,byte[] bytes, double timestamp, int sequence, boolean lastFrame, int numFrames) {
+    public FrameData(int videoId, String location,byte[] bytes, double timestamp, int sequence, boolean lastFrame, int numFrames) {
         this.videoId = videoId;
         this.bytes = bytes;
         this.timestamp = timestamp;
@@ -24,7 +24,7 @@ public class FrameData extends PipelineData {
         return numFrames;
     }   
 
-    public long getVideoId() {
+    public int getVideoId() {
         return videoId;
     }
 

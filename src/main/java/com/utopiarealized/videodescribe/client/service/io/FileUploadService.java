@@ -14,7 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.utopiarealized.videodescribe.model.dto.WebpDTO;
 import com.utopiarealized.videodescribe.client.pipeline.PipelineOrchestrator;
 import com.utopiarealized.videodescribe.client.pipeline.model.ProcessLog;
-
+import com.utopiarealized.videodescribe.model.dto.WavMetadataDTO;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 @Service
@@ -24,6 +24,7 @@ public class FileUploadService {
     private String HOST_URL = "http://localhost:6660";
     private String VIDEO_ENDPOINT = "/video-srvr/api/webp";
     private String FRAME_ENDPOINT = "/video-srvr/api/frame";
+    private String WAV_ENDPOINT = "/video-srvr/api/wav";
     private final OkHttpClient client = new OkHttpClient();
     private static final ObjectMapper mapper = new ObjectMapper();
 
@@ -41,6 +42,12 @@ public class FileUploadService {
     public void uploadFrame(String fileLocation, FrameDTO frameDTO)
             throws IOException {
         uploadFileWithMetadata(HOST_URL + FRAME_ENDPOINT, fileLocation, frameDTO,
+                null);
+    }
+
+    public void uploadWav(String fileLocation, WavMetadataDTO wavMetadataDTO)
+            throws IOException {
+        uploadFileWithMetadata(HOST_URL + WAV_ENDPOINT, fileLocation, wavMetadataDTO,
                 null);
     }
 

@@ -1,18 +1,18 @@
 package com.utopiarealized.videodescribe.client.pipeline.model;
 
 public class DownloadResult extends PipelineData {
-    private long videoId;
+    private int videoId;
     private String filePath;
     private int size;
 
-    public DownloadResult(long videoId, String filePath, int size) {
+    public DownloadResult(int videoId, String filePath, int size) {
         this.videoId = videoId;
         this.filePath = filePath;
         this.size = size;
     }
 
 
-    public long getVideoId() {
+    public int getVideoId() {
         return videoId;
     }
 

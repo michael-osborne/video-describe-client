@@ -11,7 +11,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 
 import com.utopiarealized.videodescribe.client.pipeline.model.FrameData;
-import com.utopiarealized.videodescribe.client.pipeline.model.VideoAndMetadata;
+import com.utopiarealized.videodescribe.client.pipeline.model.VideoAndAudioMetadata;
 import com.utopiarealized.videodescribe.model.dto.VideoStatusDTO;
 import com.utopiarealized.videodescribe.client.pipeline.model.VideoStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,7 +35,7 @@ public class VideoToFramesService {
     private PipelineOrchestrator pipelineOrchestrator;
 
     @Consume(threads = 2)
-    public void extractFrames(VideoAndMetadata videoAndMetadata) throws IOException {
+    public void extractFrames(VideoAndAudioMetadata videoAndMetadata) throws IOException {
         FrameCaptureResult frameCaptureResult = calculateFrameCaptureResult(videoAndMetadata);
         pipelineOrchestrator.submitData(new VideoStatus(videoAndMetadata.getDownloadResult().getVideoId(),
                 frameCaptureResult.numFrames, VideoStatusDTO.STATUS_PROCESSING, VideoStatusDTO.SUBSTATUS_FRAMES, null));
@@ -56,7 +56,7 @@ public class VideoToFramesService {
             }
 
             int seq = 0;
-            for (int frameNum = firstFrame; frameNum < videoAndMetadata.getTotalFrames(); frameNum += frameSkip) {
+            for (int frameNum = firstFrame; frameNum < videoAndMetadata.getVideoMetadata().getTotalFrames(); frameNum += frameSkip) {
                 seq++;
                 grabber.setVideoFrameNumber(frameNum);
                 Frame frame = grabber.grabImage();
@@ -116,9 +116,9 @@ public class VideoToFramesService {
 
     }
 
-    private FrameCaptureResult calculateFrameCaptureResult(VideoAndMetadata videoAndMetadata) {
-        long totalFrames = videoAndMetadata.getTotalFrames();
-        int fps = (int) videoAndMetadata.getFps();
+    private FrameCaptureResult calculateFrameCaptureResult(VideoAndAudioMetadata videoAndMetadata) {
+        long totalFrames = videoAndMetadata.getVideoMetadata().getTotalFrames();
+        int fps = (int) videoAndMetadata.getVideoMetadata().getFps();
         int maxFrames = MAX_FRAMES;
         int secondsToSkip = SECONDS_TO_SKIP;
         int firstFrame = (int) (2 * fps);

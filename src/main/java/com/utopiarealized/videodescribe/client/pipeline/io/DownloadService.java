@@ -84,7 +84,7 @@ public class DownloadService {
     
     public void downloadVideo(DownloadTask downloadTask) throws IOException, InterruptedException {
         String url = downloadTask.getUrl();
-        long videoId = downloadTask.getVideoId();
+        int videoId = downloadTask.getVideoId();
         Path videoDir = Utils.createDirectoryFromUrl(url, downloadDir, String.valueOf(videoId));
         String filePath = videoDir.resolve(videoId + ".mp4").toString();
         
@@ -92,7 +92,7 @@ public class DownloadService {
         pipelineOrchestrator.submitData(new ProcessLog(videoId, "Downloading video from " + url));
 
         ProcessModel processModel = new ProcessModel(new String[] { "yt-dlp",
-                "-o", filePath, "-f", "bestvideo", "--no-playlist", url }, DOWNLOAD_TIMEOUT_SECONDS);
+                "-o", filePath, "--no-playlist", url }, DOWNLOAD_TIMEOUT_SECONDS);
         processCreationService.createProcess(processModel);
         String prevLine = null;
         while (processModel.isRunning(STATUS_CHECK_INTERVAL_MS)) {

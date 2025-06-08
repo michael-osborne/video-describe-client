@@ -13,7 +13,7 @@ public class VideoStatusDTO {
     public static String SUBSTATUS_FRAMES = "frames";
     public static String SUBSTATUS_COMPLETE = "complete";
 
-    private long id;
+    private int id;
     private Integer totalFrames;
     private String status;
     private String substatus;
@@ -21,15 +21,15 @@ public class VideoStatusDTO {
 
     public VideoStatusDTO() {}
 
-    public VideoStatusDTO(long id, Integer totalFrames, String status, String substatus) {
+    public VideoStatusDTO(int id, Integer totalFrames, String status, String substatus) {
         this(id, totalFrames, status, substatus, null);
     }
     
-    public VideoStatusDTO(long id, String status, String substatus) {
+    public VideoStatusDTO(int id, String status, String substatus) {
         this(id, null, status, substatus, null);
     }
 
-    public VideoStatusDTO(long id, Integer totalFrames, String status, String substatus, String url) {
+    public VideoStatusDTO(int id, Integer totalFrames, String status, String substatus, String url) {
         this.id = id;
         this.totalFrames = totalFrames;
         this.status = status;
@@ -37,7 +37,7 @@ public class VideoStatusDTO {
         this.url = url;
     }
     
-    public long getId() {
+    public int getId() {
         return id;
     }
 
@@ -53,7 +53,7 @@ public class VideoStatusDTO {
         return substatus;
     }
 
-    public void setId(long id) {
+    public void setId(int id) {
         this.id = id;
     }
     

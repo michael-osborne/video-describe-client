@@ -89,7 +89,7 @@ public class PipelineOrchestrator {
                 } catch (Exception e) {
                     // Log error but continue processing
                     logger.error("[" + threadName + "] Error processing item: " + e.getMessage());
-                    logger.error("[" + threadName + "] Stack trace: " + e.getStackTrace());
+                    logger.error("[" + threadName + "] Stack trace: ", e);
                 }
             }
         }, executor);

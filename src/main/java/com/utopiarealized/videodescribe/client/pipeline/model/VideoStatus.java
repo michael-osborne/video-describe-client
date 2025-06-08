@@ -1,7 +1,7 @@
 package com.utopiarealized.videodescribe.client.pipeline.model;
 
 public class VideoStatus extends PipelineData {
-    private long id;
+    private int id;
     private String status;
     private String substatus;
 
@@ -10,7 +10,7 @@ public class VideoStatus extends PipelineData {
 
     public VideoStatus() {}
 
-    public VideoStatus(long id, int totalFrames, String status, String substatus, String url) {
+    public VideoStatus(int id, int totalFrames, String status, String substatus, String url) {
         this.id = id;
         this.totalFrames = totalFrames;
         this.status = status;
@@ -18,13 +18,13 @@ public class VideoStatus extends PipelineData {
         this.url = url;
     }
 
-    public VideoStatus(long id, String status, String substatus) {
+    public VideoStatus(int id, String status, String substatus) {
         this.id = id;
         this.status = status;
         this.substatus = substatus;
     }
 
-    public long getId() {
+    public int getId() {
         return id;
     }   
 

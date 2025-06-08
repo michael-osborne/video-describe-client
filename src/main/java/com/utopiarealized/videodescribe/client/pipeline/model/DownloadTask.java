@@ -3,9 +3,9 @@ package com.utopiarealized.videodescribe.client.pipeline.model;
 public class DownloadTask extends PipelineData {
 
     private String url;
-    private long videoId;
+    private int videoId;
 
-    public DownloadTask(String url, long videoId) {
+    public DownloadTask(String url, int videoId) {
         this.url = url;
         this.videoId = videoId;
     }
@@ -15,7 +15,7 @@ public class DownloadTask extends PipelineData {
         return url;
     }
 
-    public long getVideoId() {
+    public int getVideoId() {
         return videoId;
     }
     
