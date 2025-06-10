@@ -19,11 +19,13 @@ import com.utopiarealized.videodescribe.model.dto.FrameDescriptionRequestDTO;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.utopiarealized.videodescribe.model.dto.VideoTranscriptionDTO;
 import org.slf4j.Logger;
+import com.utopiarealized.videodescribe.model.dto.VideoDescriptionDTO;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import com.utopiarealized.videodescribe.model.dto.AudioTranscriptResponseDTO;
 import com.utopiarealized.videodescribe.model.dto.AudioTranscriptRequestDTO;
 import com.utopiarealized.videodescribe.client.pipeline.model.TranscriptionResult;
+
 @Service
 public class VideoIOServiceImpl implements VideoIOService {
 
@@ -34,7 +36,7 @@ public class VideoIOServiceImpl implements VideoIOService {
 
     @Value("${audio.transcript.url}")
     private String AUDIO_TRANSCRIPT_URL = "http://localhost:6660/api/audio-transcript";
-    
+
     @Value("${video.url}")
     private String GET_VIDEO_ENDPOINT = "/video-srvr/api/next-video";
 
@@ -44,20 +46,22 @@ public class VideoIOServiceImpl implements VideoIOService {
 
     private String POST_METADATA_ENDPOINT = "/video-srvr/api/metadata";
 
+    private String PUT_VIDEO_DESCRIPTION_ENDPOINT = "/video-srvr/api/video-description";
+
     private static final OkHttpClient client = new OkHttpClient();
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private static final OkHttpClient frameDescriptionClient = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS) // Time to establish connection
-                .readTimeout(60, TimeUnit.SECONDS) // Time to read response data
-                .writeTimeout(15, TimeUnit.SECONDS) // Time to send request body
-                .build();
+            .connectTimeout(10, TimeUnit.SECONDS) // Time to establish connection
+            .readTimeout(60, TimeUnit.SECONDS) // Time to read response data
+            .writeTimeout(15, TimeUnit.SECONDS) // Time to send request body
+            .build();
 
     private static final OkHttpClient audioTranscriptClient = new OkHttpClient.Builder()
-                .connectTimeout(10, TimeUnit.SECONDS) // Time to establish connection
-                .readTimeout(300, TimeUnit.SECONDS) // Time to read response data
-                .writeTimeout(300, TimeUnit.SECONDS) // Time to send request body
-                .build();
+            .connectTimeout(10, TimeUnit.SECONDS) // Time to establish connection
+            .readTimeout(300, TimeUnit.SECONDS) // Time to read response data
+            .writeTimeout(300, TimeUnit.SECONDS) // Time to send request body
+            .build();
 
     private String descriptionUrl = "";
 
@@ -73,7 +77,6 @@ public class VideoIOServiceImpl implements VideoIOService {
             return videoDTO;
         }
     }
-
 
     public void sendMetadata(MetadataDTO metadataDTO) {
         Response response = null;
@@ -93,7 +96,7 @@ public class VideoIOServiceImpl implements VideoIOService {
     }
 
     @Override
-    public void postFrame(FrameDTO frameDTO) throws IOException {
+    public void postFrameDescription(FrameDTO frameDTO) throws IOException {
         Request request = new Request.Builder().url(HOST_URL + FRAME_ENDPOINT)
                 .method("POST",
                         RequestBody.create(mapper.writeValueAsString(frameDTO), MediaType.parse("application/json")))
@@ -106,9 +109,9 @@ public class VideoIOServiceImpl implements VideoIOService {
     }
 
     @Override
-    public AudioTranscriptResponseDTO getAudioTranscript(AudioTranscriptRequestDTO audioTranscriptRequestDTO) throws IOException {
+    public AudioTranscriptResponseDTO getAudioTranscript(AudioTranscriptRequestDTO audioTranscriptRequestDTO)
+            throws IOException {
         ObjectNode payload = mapper.createObjectNode().put("audio", audioTranscriptRequestDTO.getBase64EncodedAudio());
-    
 
         String payloadString = mapper.writeValueAsString(payload);
         Request request = new Request.Builder()
@@ -133,8 +136,9 @@ public class VideoIOServiceImpl implements VideoIOService {
                 .method("POST",
                         RequestBody.create(mapper.writeValueAsString(
                                 new VideoTranscriptionDTO(transcriptionResult.getVideoId(),
-                                    transcriptionResult.getTranscriber(),
-                                    transcriptionResult.getTranscription())), MediaType.parse("application/json")))
+                                        transcriptionResult.getTranscriber(),
+                                        transcriptionResult.getTranscription())),
+                                MediaType.parse("application/json")))
                 .build();
         try (Response response = client.newCall(request).execute()) {
             if (response.code() != 200) {
@@ -142,15 +146,15 @@ public class VideoIOServiceImpl implements VideoIOService {
             }
         }
     }
-       
 
-    public FrameDescriptionResponseDTO getFrameDescription(FrameDescriptionRequestDTO frameDescriptionRequestDTO) throws IOException {
+    public FrameDescriptionResponseDTO getFrameDescription(FrameDescriptionRequestDTO frameDescriptionRequestDTO)
+            throws IOException {
 
         ObjectNode payload = mapper.createObjectNode().put("image", frameDescriptionRequestDTO.getBase64EncodedFrame());
         payload.put("clip_model_name", frameDescriptionRequestDTO.getClipModelName());
         payload.put("mode", frameDescriptionRequestDTO.getMode());
 
-        String payloadString = mapper.writeValueAsString(payload); 
+        String payloadString = mapper.writeValueAsString(payload);
         Request request = new Request.Builder()
                 .url(AUDIO_TRANSCRIPT_URL)
                 .post(RequestBody.create(payloadString, MediaType.parse("application/json")))
@@ -164,6 +168,21 @@ public class VideoIOServiceImpl implements VideoIOService {
             JsonNode json = mapper.readTree(response.body().string());
             String text = json.get("prompt").asText();
             return new FrameDescriptionResponseDTO(text);
+        }
+    }
+
+    @Override
+    public void postFullDescription(VideoDescriptionDTO videoDescription) throws IOException {
+        Request request = new Request.Builder().url(HOST_URL + PUT_VIDEO_DESCRIPTION_ENDPOINT)
+                .method("PUT",
+                        RequestBody.create(mapper.writeValueAsString(
+                                videoDescription),
+                                MediaType.parse("application/json")))
+                .build();
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Failed to send video description: " + response.code());
+            }
         }
     }
 

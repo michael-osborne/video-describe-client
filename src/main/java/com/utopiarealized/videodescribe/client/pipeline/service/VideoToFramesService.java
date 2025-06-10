@@ -96,6 +96,7 @@ public class VideoToFramesService {
             pipelineOrchestrator.submitData(new VideoStatus(videoAndMetadata.getDownloadResult().getVideoId(),
                     0, VideoStatusDTO.STATUS_FAILED, VideoStatusDTO.SUBSTATUS_FRAMES, null));
         } finally {
+            
             if (converter != null) {
                 converter.close();
             }
