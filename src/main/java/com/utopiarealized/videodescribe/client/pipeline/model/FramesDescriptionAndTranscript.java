@@ -4,12 +4,12 @@ import java.util.List;
 
 public class FramesDescriptionAndTranscript extends PipelineData {
    private int videoId;
-   private String description;
+   private String transcription;
    private List<String> frameDescriptions;
 
-   public FramesDescriptionAndTranscript(int videoId, String description, List<String> frameDescriptions) {
+   public FramesDescriptionAndTranscript(int videoId, String transcription, List<String> frameDescriptions) {
     this.videoId = videoId;
-    this.description = description;
+    this.transcription = transcription;
     this.frameDescriptions = frameDescriptions;
    }
 
@@ -17,8 +17,8 @@ public class FramesDescriptionAndTranscript extends PipelineData {
     return videoId;
    }
 
-   public String getDescription() {
-    return description;
+   public String getTranscription() {
+    return transcription;
    }
 
    public List<String> getFrameDescriptions() {
