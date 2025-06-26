@@ -23,7 +23,7 @@ import org.springframework.context.annotation.Profile;
 @Profile("prod")
 public class FrameToDescriptionService  {
 
-    @Value("${description.url}")
+    @Value("${frame.description.url}")
     private String descriptionUrl;
 
     

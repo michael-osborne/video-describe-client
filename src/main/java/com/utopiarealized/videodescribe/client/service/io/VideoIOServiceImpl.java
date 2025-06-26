@@ -3,20 +3,21 @@ package com.utopiarealized.videodescribe.client.service.io;
 import java.io.IOException;
 import org.springframework.beans.factory.annotation.Value;
 import okhttp3.OkHttpClient;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
 import com.utopiarealized.videodescribe.model.dto.VideoStatusDTO;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.RequestBody;
 import com.utopiarealized.videodescribe.model.dto.FrameDTO;
 import java.util.concurrent.TimeUnit;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import okhttp3.MediaType;
 import com.utopiarealized.videodescribe.model.dto.FrameDescriptionResponseDTO;
 import com.utopiarealized.videodescribe.model.dto.MetadataDTO;
 import com.utopiarealized.videodescribe.model.dto.FrameDescriptionRequestDTO;
-import com.fasterxml.jackson.databind.JsonNode;
+
 import com.utopiarealized.videodescribe.model.dto.VideoTranscriptionDTO;
 import org.slf4j.Logger;
 import com.utopiarealized.videodescribe.model.dto.VideoDescriptionDTO;
@@ -36,6 +37,9 @@ public class VideoIOServiceImpl implements VideoIOService {
 
     @Value("${audio.transcript.url}")
     private String AUDIO_TRANSCRIPT_URL = "http://localhost:6660/api/audio-transcript";
+
+    @Value("${frame.description.url}")
+    private String FRAME_DESCRIPTION_URL = "http://localhost:5680/";
 
     @Value("${video.url}")
     private String GET_VIDEO_ENDPOINT = "/video-srvr/api/next-video";
@@ -126,7 +130,7 @@ public class VideoIOServiceImpl implements VideoIOService {
 
             JsonNode json = mapper.readTree(response.body().string());
             String text = json.get("transcription").asText();
-            return new AudioTranscriptResponseDTO(text);
+            return new AudioTranscriptResponseDTO(text, "basic transcriber");
         }
     }
 
@@ -136,8 +140,8 @@ public class VideoIOServiceImpl implements VideoIOService {
                 .method("POST",
                         RequestBody.create(mapper.writeValueAsString(
                                 new VideoTranscriptionDTO(transcriptionResult.getVideoId(),
-                                        transcriptionResult.getTranscriber(),
-                                        transcriptionResult.getTranscription())),
+                                transcriptionResult.getTranscription(),
+                                transcriptionResult.getTranscriber())),
                                 MediaType.parse("application/json")))
                 .build();
         try (Response response = client.newCall(request).execute()) {
@@ -156,7 +160,7 @@ public class VideoIOServiceImpl implements VideoIOService {
 
         String payloadString = mapper.writeValueAsString(payload);
         Request request = new Request.Builder()
-                .url(AUDIO_TRANSCRIPT_URL)
+                .url(frameDescriptionRequestDTO.getUrl())
                 .post(RequestBody.create(payloadString, MediaType.parse("application/json")))
                 .build();
 

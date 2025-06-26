@@ -25,7 +25,7 @@ public class VideoDescriptionAggregationService {
     public void consumeTranscription(TranscriptionResult transcription) {
         Holder holder = holders.computeIfAbsent(transcription.getVideoId(),
                 (key) -> new Holder(transcription.getVideoId(), this));
-        holder.setTranscription(transcription.getTranscription());
+        holder.setTranscription(transcription.getTranscription(), transcription.getTranscriber());
     }
 
     @Consume
@@ -46,7 +46,8 @@ public class VideoDescriptionAggregationService {
 
     public void submitDataAndRemoveHolder(Holder holder) {
         pipelineOrchestrator
-                .submitData(new FramesDescriptionAndTranscript(holder.videoId, holder.transcription, holder.frameDescriptions));
+                .submitData(new FramesDescriptionAndTranscript(holder.videoId, holder.transcription, 
+                holder.transcriber, holder.frameDescriptions));
         holders.remove(holder.videoId);
     }
 
@@ -55,6 +56,7 @@ public class VideoDescriptionAggregationService {
         private int videoId;
         private List<String> frameDescriptions = new ArrayList<>();
         private String transcription;
+        private String transcriber;
         private VideoDescriptionAggregationService callback;
 
         public Holder(int videoId, VideoDescriptionAggregationService callback) {
@@ -69,8 +71,9 @@ public class VideoDescriptionAggregationService {
             }
         }
 
-        public synchronized void setTranscription(String transcription) {
+        public synchronized void setTranscription(String transcription, String transcriber) {
             this.transcription = transcription;
+            this.transcriber = transcriber;
             if (frameDescriptions.size() >= numFrames && numFrames != -1) {
                 callback.submitDataAndRemoveHolder(this);
             }
