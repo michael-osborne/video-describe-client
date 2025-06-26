@@ -1,4 +1,4 @@
-package com.utopiarealized.videodescribe.client.pipeline.model;
+package com.utopiarealized.videodescribe.model.dto;
 
 
 public class OllamaDTO {

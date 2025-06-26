@@ -1,17 +1,15 @@
-package com.utopiarealized.videodescribe.client.pipeline.io;
+package com.utopiarealized.videodescribe.client.service.io;
 import java.util.concurrent.TimeUnit;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.utopiarealized.videodescribe.client.pipeline.model.OllamaDTO;
+import com.utopiarealized.videodescribe.model.dto.OllamaDTO;
 
 import org.springframework.stereotype.Service;
-import java.time.*;
+
 import org.springframework.beans.factory.annotation.Value;
 import okhttp3.*;
 import java.io.IOException;
-
+import com.fasterxml.jackson.databind.JsonNode;
 @Service
 public class OllamaClient {
     @Value("${ollama.api.url}")
@@ -43,7 +41,8 @@ public class OllamaClient {
             if (!response.isSuccessful()) {
                 throw new IOException("Unexpected code " + response + ": " + response.body().string());
             }
-            return response.body().string();
+            JsonNode json = mapper.readTree(response.body().string());
+            return json.get("response").asText();
         }
     }
 

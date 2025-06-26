@@ -129,7 +129,7 @@ public class VideoIOServiceImpl implements VideoIOService {
             }
 
             JsonNode json = mapper.readTree(response.body().string());
-            String text = json.get("transcription").asText();
+            String text = json.get("transcription").get("text").asText();
             return new AudioTranscriptResponseDTO(text, "basic transcriber");
         }
     }

@@ -3,13 +3,13 @@ package com.utopiarealized.videodescribe.client.pipeline.service;
 import org.springframework.stereotype.Service;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.utopiarealized.videodescribe.client.pipeline.io.OllamaClient;
 import com.utopiarealized.videodescribe.client.pipeline.model.FramesDescriptionAndTranscript;
 import com.utopiarealized.videodescribe.client.annotation.Consume;
-import com.utopiarealized.videodescribe.client.pipeline.model.FrameDescription;
 import org.springframework.beans.factory.annotation.Value;
 import com.utopiarealized.videodescribe.client.pipeline.PipelineOrchestrator;
 import com.utopiarealized.videodescribe.client.pipeline.model.VideoDescriptionResult;
+import com.utopiarealized.videodescribe.client.service.io.OllamaClient;
+
 import java.io.IOException;
 @Service
 public class VideoSummaryService {
@@ -23,7 +23,7 @@ public class VideoSummaryService {
     private String ollamaModel;
 
 
-    private String prompt = "Summarize the video in 2-3 paragraphs based on the transcript and the descriptions of the frames. " +
+    private String prompt = "Assume you are an editor writing brief video summaries for a website. Summarize the video in 2-3 paragraphs based on the transcript and the descriptions of the frames. Be concise. There may be misspelling or other errors in either the transcription or the frames. Do your best to correct these internally without commenting on them " +
     "The frames are numbered from 1 to N, where N is the total number of frames in the video. " +
     "The transcript is the audio dialog of the video\n";
 
