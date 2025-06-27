@@ -11,12 +11,18 @@ supported by yt-dlp. It queries a server (code private) for a URL of a video to 
 - Downloads the video (yt-dlp)
     -  Retrieves metadata (ffprobe)
         - Uploads metdata to server
-    - Creates a sped up thumbnail .webp (ffmpeg)
-        - Uploads the .webp to the server
+    - Creates a sped up thumbnail .webp & single channel .wav file (ffmpeg) 
+        - Uploads the .webp to server
+        - Uploads .wav file to server
+        - Sends wav file to NeMo AI instance for transcription
+            -Uploads Transcription to server
     - Grabs frames from the video (one every 6 seconds by default) (FFmpegFrameGrabber)
         - Uploads frames to server
         - Sends frames to image interrogator to convert image to description (stable-diffusion-ui: interrgator)
             - Uploads frames to server.
+        - Sends transcription and frames to ollama for summary
+            - Sends summary to server.
+
 
 Each of the following lines is it's own pipeline. Indentations indicate dependecy on previous pipeline output.
 
