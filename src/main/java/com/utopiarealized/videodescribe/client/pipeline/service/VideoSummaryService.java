@@ -23,7 +23,10 @@ public class VideoSummaryService {
     private String ollamaModel;
 
 
-    private String prompt = "Assume you are an editor writing brief video summaries for a website. Summarize the video in 2-3 paragraphs based on the transcript and the descriptions of the frames. Be concise. There may be misspelling or other errors in either the transcription or the frames. Do your best to correct these internally without commenting on them " +
+    private String prompt = "You are an editor writing brief video summaries for a website." + 
+    "Summarize the video in 2-3 paragraphs based on the transcript and the descriptions of the ordered frames. Be concise. " +
+    "There may be misspelling or other errors in either the transcription or the frames. Do your best to correct these " +
+    " errors without clarification. Do not return your thoughts while you digest the problem. Do not discuss the input." +
     "The frames are numbered from 1 to N, where N is the total number of frames in the video. " +
     "The transcript is the audio dialog of the video\n";
 

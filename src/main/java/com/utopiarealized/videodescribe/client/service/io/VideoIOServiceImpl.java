@@ -19,6 +19,8 @@ import com.utopiarealized.videodescribe.model.dto.MetadataDTO;
 import com.utopiarealized.videodescribe.model.dto.FrameDescriptionRequestDTO;
 
 import com.utopiarealized.videodescribe.model.dto.VideoTranscriptionDTO;
+
+import org.bytedeco.librealsense2.global.realsense2;
 import org.slf4j.Logger;
 import com.utopiarealized.videodescribe.model.dto.VideoDescriptionDTO;
 import org.slf4j.LoggerFactory;
@@ -129,9 +131,28 @@ public class VideoIOServiceImpl implements VideoIOService {
             }
 
             JsonNode json = mapper.readTree(response.body().string());
-            String text = json.get("transcription").get("text").asText();
-            return new AudioTranscriptResponseDTO(text, "basic transcriber");
+            String curTranscription = "";
+            if (json.get("transcription") != null) {
+                curTranscription = getTranscriptionTextFromString(json.get("transcription").asText());
+            }
+            return new AudioTranscriptResponseDTO(curTranscription, "basic transcriber");
         }
+    }
+
+    private String getTranscriptionTextFromString(String transcription){
+        if (transcription == null ) {
+            return "";
+        }
+        int startIndex = transcription.indexOf("text='");
+        if (startIndex == -1) {
+            return "";
+        }
+        startIndex +=6;
+        int endIndex = transcription.indexOf("'", startIndex+1);
+        if ( endIndex == -1) {
+            return "";
+        }
+        return transcription.substring(startIndex, endIndex);
     }
 
     @Override

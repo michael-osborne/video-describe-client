@@ -66,7 +66,7 @@ public class VideoDescriptionAggregationService {
 
         public synchronized void addFrameDescription(FrameDescription frameDescription) {
             frameDescriptions.add(frameDescription.getDescription());
-            if (frameDescriptions.size() >= numFrames && numFrames != -1) {
+            if (frameDescriptions.size() >= numFrames && numFrames != -1 && transcription != null) {
                 callback.submitDataAndRemoveHolder(this);
             }
         }
@@ -81,7 +81,7 @@ public class VideoDescriptionAggregationService {
 
         public synchronized void setNumFrames(int numFrames) {
             this.numFrames = numFrames;
-            if (frameDescriptions.size() >= numFrames) {
+            if (frameDescriptions.size() >= numFrames && transcription != null) {
                 callback.submitDataAndRemoveHolder(this);
             }
         }
