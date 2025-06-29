@@ -12,6 +12,8 @@ import com.utopiarealized.videodescribe.client.pipeline.PipelineOrchestrator;
 @Service
 @Profile("dev")
 public class VideoDescriptionServiceFacade {
+    
+    private static final String thinking = "<think> thinking htingking thing </think>\n";
 
     @Autowired
     private PipelineOrchestrator pipelineOrchestrator;
@@ -36,11 +38,14 @@ public class VideoDescriptionServiceFacade {
     private String getDescription() {
         Random r = new Random();
 
-        StringBuilder sb = new StringBuilder();
+        StringBuilder sb = new StringBuilder(thinking);
 
         int numWords = r.nextInt(30) + 20;
         for (int i = 0; i < numWords; i++) {
             sb.append(randomWords[r.nextInt(randomWords.length)]).append(" ");
+            if (i % 10 == 0) {
+                sb.append("\n\n");
+            }
         }
         return sb.toString();
 

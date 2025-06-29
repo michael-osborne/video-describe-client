@@ -38,7 +38,7 @@ public class WavToTranscriptionFacade {
     public void wavToTranscription(WavFileResult wavFileResult) throws IOException {
        
         pipelineOrchestrator.submitData(
-                new TranscriptionResult(wavFileResult.getVideoId(), "facade transcriber", getDescription()));
+                new TranscriptionResult(wavFileResult.getVideoId(), getDescription(),"facade transcriber"));
     }
 
     private String getDescription() {

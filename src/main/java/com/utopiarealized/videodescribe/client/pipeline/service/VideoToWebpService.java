@@ -108,8 +108,8 @@ public class VideoToWebpService {
             int width = (int) Math.round( (double) videoAndMetadata.getVideoMetadata().getWidth() * divisor);
             return new WidthAndHeight(width, 320);
         } else {
-            double divisor = (double) 320 / (double) videoAndMetadata.getVideoMetadata().getHeight();
-            int height = (int) Math.round( (double) videoAndMetadata.getVideoMetadata().getWidth() * divisor);
+            double divisor = (double) 320 / (double) videoAndMetadata.getVideoMetadata().getWidth();
+            int height = (int) Math.round( (double) videoAndMetadata.getVideoMetadata().getHeight() * divisor);
             return new WidthAndHeight(320, height);
         }
     }

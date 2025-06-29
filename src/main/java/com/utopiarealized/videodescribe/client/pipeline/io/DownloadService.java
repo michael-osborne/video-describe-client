@@ -8,7 +8,6 @@ import com.utopiarealized.videodescribe.utils.Utils;
 
 import org.springframework.beans.factory.annotation.Value;
 import com.utopiarealized.videodescribe.model.ProcessModel;
-import com.utopiarealized.videodescribe.client.annotation.Consume;
 
 import java.nio.file.Path;
 import org.springframework.stereotype.Service;

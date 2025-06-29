@@ -8,10 +8,12 @@ import com.utopiarealized.videodescribe.client.annotation.Consume;
 import org.springframework.beans.factory.annotation.Value;
 import com.utopiarealized.videodescribe.client.pipeline.PipelineOrchestrator;
 import com.utopiarealized.videodescribe.client.pipeline.model.VideoDescriptionResult;
+import org.springframework.context.annotation.Profile;
 import com.utopiarealized.videodescribe.client.service.io.OllamaClient;
 
 import java.io.IOException;
 @Service
+@Profile("prod)")
 public class VideoSummaryService {
     @Autowired
     private OllamaClient ollamaClient;
