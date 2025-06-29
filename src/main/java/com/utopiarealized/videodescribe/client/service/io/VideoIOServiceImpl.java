@@ -59,7 +59,7 @@ public class VideoIOServiceImpl implements VideoIOService {
 
     private static final OkHttpClient frameDescriptionClient = new OkHttpClient.Builder()
             .connectTimeout(10, TimeUnit.SECONDS) // Time to establish connection
-            .readTimeout(60, TimeUnit.SECONDS) // Time to read response data
+            .readTimeout(90, TimeUnit.SECONDS) // Time to read response data
             .writeTimeout(15, TimeUnit.SECONDS) // Time to send request body
             .build();
 
@@ -125,17 +125,18 @@ public class VideoIOServiceImpl implements VideoIOService {
                 .post(RequestBody.create(payloadString, MediaType.parse("application/json")))
                 .build();
 
-        try (Response response = frameDescriptionClient.newCall(request).execute()) {
+        try (Response response = audioTranscriptClient.newCall(request).execute()) {
             if (!response.isSuccessful()) {
                 throw new IOException("Failed to get audio transcript: " + response.code());
             }
-
-            JsonNode json = mapper.readTree(response.body().string());
+            final String body = response.body().string();
+            logger.info("Audio transcript response: " + body);
+            JsonNode json = mapper.readTree(body);
             String curTranscription = "";
             if (json.get("transcription") != null) {
                 curTranscription = getTranscriptionTextFromString(json.get("transcription").asText());
             }
-            return new AudioTranscriptResponseDTO(curTranscription, "basic transcriber");
+            return new AudioTranscriptResponseDTO(curTranscription, "parakeet-tdt-0.6b-v2");
         }
     }
 
@@ -143,12 +144,13 @@ public class VideoIOServiceImpl implements VideoIOService {
         if (transcription == null ) {
             return "";
         }
-        int startIndex = transcription.indexOf("text='");
+        int startIndex = transcription.indexOf("text=");
         if (startIndex == -1) {
             return "";
         }
+        String end= transcription.substring(startIndex+5,startIndex+6);
         startIndex +=6;
-        int endIndex = transcription.indexOf("'", startIndex+1);
+        int endIndex = transcription.indexOf(end, startIndex+1);
         if ( endIndex == -1) {
             return "";
         }
