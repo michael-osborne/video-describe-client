@@ -8,7 +8,9 @@ import com.utopiarealized.videodescribe.client.pipeline.model.VideoDescriptionRe
 import java.util.Random;
 import com.utopiarealized.videodescribe.client.pipeline.model.FramesDescriptionAndTranscript;
 import com.utopiarealized.videodescribe.client.pipeline.PipelineOrchestrator;
-
+import com.utopiarealized.videodescribe.client.pipeline.model.ProcessLog;
+import com.utopiarealized.videodescribe.client.pipeline.model.VideoStatus;
+import com.utopiarealized.videodescribe.model.dto.VideoStatusDTO;
 @Service
 @Profile("dev")
 public class VideoDescriptionServiceFacade {
@@ -33,6 +35,8 @@ public class VideoDescriptionServiceFacade {
     public void consumeFullDescription(FramesDescriptionAndTranscript fullDescription) {
         pipelineOrchestrator.submitData(new VideoDescriptionResult(fullDescription.getVideoId(),
                 getDescription(), "describer facade"));
+        pipelineOrchestrator.submitData(new ProcessLog(fullDescription.getVideoId(), "Video description completed"));
+        pipelineOrchestrator.submitData(new VideoStatus(fullDescription.getVideoId(), VideoStatusDTO.STATUS_COMPLETED, VideoStatusDTO.SUBSTATUS_COMPLETE));
     }
 
     private String getDescription() {

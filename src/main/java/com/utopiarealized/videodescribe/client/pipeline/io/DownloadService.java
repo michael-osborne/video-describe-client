@@ -58,7 +58,7 @@ public class DownloadService {
                 VideoStatusDTO videoDTO = videoIOService.getNextVideo();
                 logger.info("[" + Thread.currentThread().getName() + "] Downloading video " + videoDTO);
                 if (videoDTO == null) {
-                    try {
+                    try {us
                         Thread.sleep(1000);
                     } catch (InterruptedException ie) {
                         Thread.currentThread().interrupt();

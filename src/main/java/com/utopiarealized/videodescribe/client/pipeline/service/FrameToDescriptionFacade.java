@@ -8,8 +8,9 @@ import com.utopiarealized.videodescribe.client.annotation.Consume;
 import com.utopiarealized.videodescribe.client.pipeline.PipelineOrchestrator;
 import com.utopiarealized.videodescribe.client.pipeline.model.FrameData;
 import com.utopiarealized.videodescribe.client.pipeline.model.FrameDescription;
-import com.utopiarealized.videodescribe.client.pipeline.model.VideoStatus;
-import com.utopiarealized.videodescribe.model.dto.VideoStatusDTO;
+import com.utopiarealized.videodescribe.client.pipeline.model.ProcessLog;
+
+
 import org.springframework.stereotype.Service;
 
 @Service
@@ -38,7 +39,7 @@ public class FrameToDescriptionFacade  {
         pipelineOrchestrator.submitData(new FrameDescription(frame.getVideoId(), getDescription(), frame.getTimestamp(), frame.getSequence(),
                 frame.isLastFrame()));
         if (frame.isLastFrame()) {
-            pipelineOrchestrator.submitData(new VideoStatus(frame.getVideoId(), VideoStatusDTO.STATUS_COMPLETED, VideoStatusDTO.SUBSTATUS_COMPLETE));
+            pipelineOrchestrator.submitData(new ProcessLog(frame.getVideoId(), "All frames processed"));
         }
     }
     

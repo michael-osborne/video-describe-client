@@ -130,6 +130,10 @@ public class PipelineOrchestrator {
     // Resubmit data to the same consumer only
     // Resubmit to the beginning of the queue
     public void resumbmitData(PipelineData data) {
+        if (data.getMetaData().getRetries() > 3) {
+           logger.error("Max retries reached for data: " + data.getClass().getName());
+           return;
+        }
         data.getMetaData().setRetries(data.getMetaData().getRetries() + 1);
          StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
          String classAndMethodName = stackTrace[2].getClassName() + "." + stackTrace[2].getMethodName();

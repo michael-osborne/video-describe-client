@@ -37,7 +37,7 @@ public class WavToTranscriptionService {
                     new AudioTranscriptRequestDTO(wavFileResult.getLocation(), wavFileResult.getVideoId(), wavFileResult.getWavFile()));
             pipelineOrchestrator.submitData(new TranscriptionResult(wavFileResult.getVideoId(), audioTranscriptResponseDTO.getTranscript(), "basic transcriber"));
         } catch (IOException e) {
-            pipelineOrchestrator.submitData(new ProcessLog(wavFileResult.getVideoId(), "Error getting audio transcription: " + e.getMessage()));
+            pipelineOrchestrator.resumbmitData(new ProcessLog(wavFileResult.getVideoId(), "Error getting audio transcription: " + e.getMessage()));
         }
     }
 }

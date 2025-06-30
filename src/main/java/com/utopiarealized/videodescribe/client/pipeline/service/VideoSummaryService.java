@@ -9,6 +9,9 @@ import org.springframework.beans.factory.annotation.Value;
 import com.utopiarealized.videodescribe.client.pipeline.PipelineOrchestrator;
 import com.utopiarealized.videodescribe.client.pipeline.model.VideoDescriptionResult;
 import org.springframework.context.annotation.Profile;
+import com.utopiarealized.videodescribe.client.pipeline.model.ProcessLog;
+import com.utopiarealized.videodescribe.client.pipeline.model.VideoStatus;
+import com.utopiarealized.videodescribe.model.dto.VideoStatusDTO;
 import com.utopiarealized.videodescribe.client.service.io.OllamaClient;
 
 import java.io.IOException;
@@ -17,6 +20,7 @@ import java.io.IOException;
 public class VideoSummaryService {
     @Autowired
     private OllamaClient ollamaClient;
+    
 
     @Autowired
     private PipelineOrchestrator pipelineOrchestrator;
@@ -39,6 +43,7 @@ public class VideoSummaryService {
 
     @Consume
     public void consumeVideoDescription(FramesDescriptionAndTranscript videoDescription) {
+        pipelineOrchestrator.submitData(new ProcessLog(videoDescription.getVideoId(), "Generating video summary"));
         final StringBuilder sb = new StringBuilder(prompt);
         sb.append(framesStartPrompt);
         int frame = 1;
@@ -54,6 +59,9 @@ public class VideoSummaryService {
 
             pipelineOrchestrator.submitData(new VideoDescriptionResult(videoDescription.getVideoId(),
                 summary, ollamaModel));
+            pipelineOrchestrator.submitData(new ProcessLog(videoDescription.getVideoId(), "Video summary completed"));
+            pipelineOrchestrator.submitData(new VideoStatus(videoDescription.getVideoId(), VideoStatusDTO.STATUS_COMPLETED, VideoStatusDTO.SUBSTATUS_COMPLETE));
+
         } catch (IOException e) {
             pipelineOrchestrator.submitData(videoDescription);
         }

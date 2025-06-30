@@ -1,7 +1,20 @@
 # VIDEO DESCRIBE CLIENT
 
-This is a java project that uses various open source tools (yt-dlp, ffmpeg, stable-diffusion-ui:interrogator) to download a video on the internet and create a set of descriptive keywords of that video. 
+This is a java project that uses various open source tools (yt-dlp, ffmpeg, stable-diffusion-ui:interrogator, NeMo, ollama) to create a summary of a video on the internet.
+The following artifacts are created during processing:
+- A accelerated .webp thumbnail of the video.
+- AI generated descriptions of a subset of frames in the video (default: one frame per six seconds)
+- .wav audio file of the video
+- Transcript of the audio file
+- Generalized summary based on frames and audio file
 
+## AI Models/Hardware
+While different models can be employed (with various resource/precision tradeoffs), the current setup uses:
+- Qwen3:30b (Summary)
+- Transcription (parakeet-tdt-0.6b-v2)
+- Frame description (stable-diffusion interrogator)
+
+Concurrently, these models use ~40GB VRAM, allowing this client to be run on a high-end desktop.
 
 ## Technical
 
