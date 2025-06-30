@@ -41,7 +41,7 @@ public class PipelineOrchestrator {
                 logger.info("[" + Thread.currentThread().getName() + "] Processing item: " + data + " on method: " + method.getName());
                 method.invoke(service, data);
             } catch (InvocationTargetException | IllegalAccessException e) {
-                throw new RuntimeException("Failed to invoke method: " + method.getName()
+                logger.error("[" + Thread.currentThread().getName() + "] Error invoking method: " + method.getName()
                         + " on service: " + service.getClass().getName(), e);
             } catch (Exception e) {
                 logger.error("[" + Thread.currentThread().getName() + "] Error invoking method: " + method.getName()

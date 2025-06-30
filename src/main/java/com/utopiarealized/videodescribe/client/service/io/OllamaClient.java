@@ -18,9 +18,9 @@ public class OllamaClient {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private static final OkHttpClient client = new OkHttpClient.Builder()
-            .connectTimeout(10, TimeUnit.SECONDS) // Time to establish connection
-            .readTimeout(60, TimeUnit.SECONDS) // Time to read response data
-            .writeTimeout(15, TimeUnit.SECONDS) // Time to send request body
+            .connectTimeout(120, TimeUnit.SECONDS) // Time to establish connection
+            .readTimeout(120, TimeUnit.SECONDS) // Time to read response data
+            .writeTimeout(120, TimeUnit.SECONDS) // Time to send request body
             .build();
 
 

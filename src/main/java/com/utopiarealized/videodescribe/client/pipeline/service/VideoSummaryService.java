@@ -16,7 +16,6 @@ import com.utopiarealized.videodescribe.client.service.io.OllamaClient;
 
 import java.io.IOException;
 @Service
-@Profile("prod)")
 public class VideoSummaryService {
     @Autowired
     private OllamaClient ollamaClient;
@@ -30,15 +29,22 @@ public class VideoSummaryService {
 
 
     private String prompt = "You are an editor writing brief video summaries for a website." + 
-    "Summarize the video in 2-3 paragraphs based on the transcript and the descriptions of the ordered frames. Be concise. " +
-    "There may be misspelling or other errors in either the transcription or the frames. Do your best to correct these " +
-    " errors without clarification. Do not return your thoughts while you digest the problem. Do not discuss the input." +
+    "Summarize a video in 2-3 paragraphs based on the transcript and the descriptions of the ordered frames. Be concise. " +
+    "Focus on actions,relational, and emotional content instead of technical details such as style or technology. " +
+    "If something is not clear, do your best to correct it. The transcript may be blank or garbage. If so, ignore it " +
+    "THIS IS A ONE-SHOT PROMPT. DO NOT ASK QUESTIONS. DO NOT DISCUSS THE INPUT." +
     "The frames are numbered from 1 to N, where N is the total number of frames in the video. " +
     "The transcript is the audio dialog of the video\n";
 
     private String framesStartPrompt = "Frames :";
 
     private String framesEndPrompt = "\n\nTranscript :";
+
+    private String endPrompt = "\n\nTo be clear, the ask is: You are an editor writing brief video summaries for a website." + 
+    "Summarize a video in 2-3 paragraphs based on the transcript and the descriptions of the ordered frames. Be concise. " +
+    "Focus on actions,relational, and emotional content instead of technical details such as style or technology. " +
+    "If something is not clear, do your best to correct it. The transcript may be blank or garbage. If so, ignore it " +
+    "THIS IS A ONE-SHOT PROMPT. DO NOT ASK QUESTIONS. DO NOT DISCUSS THE INPUT.";
 
 
     @Consume
@@ -53,6 +59,7 @@ public class VideoSummaryService {
         }       
         sb.append(framesEndPrompt);
         sb.append(videoDescription.getTranscription());
+        sb.append(endPrompt);
         try {
             String summary = ollamaClient.generateText(ollamaModel, sb.toString());
             System.out.println(summary);
