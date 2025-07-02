@@ -8,6 +8,13 @@ The following artifacts are created during processing:
 - Transcript of the audio file
 - Generalized summary based on frames and audio file
 
+## Demo
+<video autoplay muted loop playsinline>
+  <source src="https://raw.githubusercontent.com/michael-osborne/video-describe-client/main/assets/video-describe-demo.mp4" 
+  type="video/mp4">
+  Your browser does not support the video tag.
+</video>
+
 ## AI Models/Hardware
 While different models can be employed (with various resource/precision tradeoffs), the current setup uses:
 - Qwen3:30b (Summary)
