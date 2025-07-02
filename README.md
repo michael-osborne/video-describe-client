@@ -1,5 +1,11 @@
 # VIDEO DESCRIBE CLIENT
 
+## DEMO
+
+https://github.com/user-attachments/assets/046492b5-425f-4c65-b4ab-54cf5b6cf39f
+
+## Summary
+
 This is a java project that uses various open source tools (yt-dlp, ffmpeg, stable-diffusion-ui:interrogator, NeMo, ollama) to create a summary of a video on the internet.
 The following artifacts are created during processing:
 - A accelerated .webp thumbnail of the video.
@@ -7,13 +13,6 @@ The following artifacts are created during processing:
 - .wav audio file of the video
 - Transcript of the audio file
 - Generalized summary based on frames and audio file
-
-## Demo
-<video autoplay muted loop playsinline>
-  <source src="https://raw.githubusercontent.com/michael-osborne/video-describe-client/main/assets/video-describe-demo.mp4" 
-  type="video/mp4">
-  Your browser does not support the video tag.
-</video>
 
 ## AI Models/Hardware
 While different models can be employed (with various resource/precision tradeoffs), the current setup uses:
