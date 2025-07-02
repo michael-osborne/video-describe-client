@@ -27,7 +27,7 @@ public class VideoSummaryService {
     @Value("${ollama.model}")
     private String ollamaModel;
 
-
+/*
     private String prompt = "You are an editor writing brief video summaries for a website." + 
     "Summarize a video in 2-3 paragraphs based on the transcript and the descriptions of the ordered frames. Be concise. " +
     "Focus on actions,relational, and emotional content instead of technical details such as style or technology. " +
@@ -45,7 +45,27 @@ public class VideoSummaryService {
     "Focus on actions,relational, and emotional content instead of technical details such as style or technology. " +
     "If something is not clear, do your best to correct it. The transcript may be blank or garbage. If so, ignore it " +
     "THIS IS A ONE-SHOT PROMPT. DO NOT ASK QUESTIONS. DO NOT DISCUSS THE INPUT.";
+*/
 
+private String prompt = "You are an editor writing brief video summaries for a website." + 
+"Summarize a video in 2-3 paragraphs based on the transcript and the descriptions of the ordered frames.The frames are 6 seconds apart unless there are 250 or more of them. " +    
+"The words in the frame go from more important to less important. Be concise in your response, and make the response approachable to someone with an associates degree " +
+"Focus on actions being taken firstly, emotional context second (and only if there is emotive content in the frames) instead of technical details such as style or technology. " +
+"If the frames aren't changing much, it may be a podcast. If so, focus on the transcription if it looks valid.If something is not clear, do your best to correct it. The transcript may be blank or garbage. If so, ignore it " +
+"THIS IS A ONE-SHOT PROMPT. DO NOT ASK QUESTIONS. DO NOT DISCUSS THE INPUT." +
+"The frames are numbered from 1 to N, where N is the total number of frames in the video. " +
+"The transcript is the audio dialog of the video\n";
+
+private String framesStartPrompt = "Frames :";
+
+private String framesEndPrompt = "\n\nTranscript :";
+
+private String endPrompt = "\n\nTo be clear, the ask is: You are an editor writing brief video summaries for a website." + 
+"Summarize a video in 2-3 paragraphs based on the transcript and the descriptions of the ordered frames.The frames are 6 seconds apart unless there are 250 or more of them. " +    
+"The words in the frame go from more important to less important. Be concise in your response, and make the response approachable to someone with an associates degree " +
+"Focus on actions being taken firstly, emotional context second (and only if there is emotive content in the frames) instead of technical details such as style or technology. " +
+"If the frames aren't changing much, it may be a podcast. If so, focus on the transcription if it looks valid.If something is not clear, do your best to correct it. The transcript may be blank or garbage. If so, ignore it " +
+"THIS IS A ONE-SHOT PROMPT. DO NOT ASK QUESTIONS. DO NOT DISCUSS THE INPUT.";
 
     @Consume
     public void consumeVideoDescription(FramesDescriptionAndTranscript videoDescription) {
