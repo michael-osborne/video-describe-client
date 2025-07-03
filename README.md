@@ -11,7 +11,7 @@ https://github.com/user-attachments/assets/2cd61ca1-6f91-425a-8178-c8283d52a1d2
 
 This is a java project that uses various open source tools (yt-dlp, ffmpeg, stable-diffusion-ui:interrogator, NeMo, ollama) to create a summary of a video on the internet.
 The following artifacts are created during processing:
-- A accelerated .webp thumbnail of the video.
+- An accelerated .webp thumbnail of the video.
 - AI generated descriptions of a subset of frames in the video (default: one frame per six seconds)
 - .wav audio file of the video
 - Transcript of the audio file
