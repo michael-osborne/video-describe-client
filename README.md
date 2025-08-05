@@ -23,7 +23,7 @@ While different models can be employed (with various resource/precision tradeoff
 - Transcription (parakeet-tdt-0.6b-v2)
 - Frame description (stable-diffusion interrogator)
 
-Concurrently, these models use ~40GB VRAM, allowing this client to be run on a high-end desktop.
+Concurrently, these models use ~40GB VRAM, allowing this client to be run on a high-end desktop with two GPUs.
 
 ## Technical
 
